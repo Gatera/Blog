@@ -59,21 +59,26 @@ app.get("/compose", function(req, res) {
 });
 
 app.get("/posts/:category", function(req, res) {
-  //lodash to lowercase
-  const paramtr = _.lowerCase(req.params.category);
+  
+  const paramtr = req.params.category;
 
-  posts.forEach(function(post) {
-    const storedTitle = _.lowerCase(post.title);
-    const postTitle = post.title;
-    const postContent = post.post;
+  Post.findOne({title: paramtr}, function(err, foundPost) {
+    if (!err) {
+      if (foundPost) {
+          const storedId = foundPost._id;
+          const postTitle = foundPost.title;
+          const postContent = foundPost.post;
 
-    if ( storedTitle === paramtr) {
-      res.render("post", {singlePostTitle: postTitle, singlePostContent: postContent, linkPost: postTitle});
+        res.render("post", {singlePostTitle: postTitle, singlePostContent: postContent, linkPost: storedId});
+      } else {
+        console.log("Not found");
+      }
     } else {
-      console.log("No match");
+      console.log("err");
     }
   });
-});
+
+  });
 
 app.post("/compose", function(req, res) {
   const newTitle = req.body.composeTitle;
