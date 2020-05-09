@@ -27,8 +27,6 @@ const post = new Post ({
   post: "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing."
 });
 
-const posts = [];
-
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -58,18 +56,17 @@ app.get("/compose", function(req, res) {
   res.render("compose");
 });
 
-app.get("/posts/:category", function(req, res) {
-  
-  const paramtr = req.params.category;
+app.get("/posts/:postId", function(req, res) {
 
-  Post.findOne({title: paramtr}, function(err, foundPost) {
+  const postId = req.params.postId;
+
+  Post.findOne({_id: postId}, function(err, foundPost) {
     if (!err) {
       if (foundPost) {
-          const storedId = foundPost._id;
           const postTitle = foundPost.title;
           const postContent = foundPost.post;
 
-        res.render("post", {singlePostTitle: postTitle, singlePostContent: postContent, linkPost: storedId});
+        res.render("post", {singlePostTitle: postTitle, singlePostContent: postContent, linkPost: postId});
       } else {
         console.log("Not found");
       }

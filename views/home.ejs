@@ -5,7 +5,7 @@
 <p><%if (post.title === "Home") {%>
   <%=post.post%>
 <%} else {%>
-  <%= post.post.substring(0, 250) + " ..."%><a href="/posts/<%=post.title%>">Read more</a></p>
+  <%= post.post.substring(0, 250) + " ..."%><a href="/posts/<%=post._id%>">Read more</a></p>
 <%}%>
 <% }); %>
 
